@@ -1,0 +1,28 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Java / Maven (backend/)
+backend/target/
+*.class
+*.log
+
+# H2 file-mode artifacts (in case local runs switch away from in-memory)
+*.mv.db
+*.trace.db
+
+# Angular / Node (frontend/)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.local
+application-local.yml
+application-local.properties

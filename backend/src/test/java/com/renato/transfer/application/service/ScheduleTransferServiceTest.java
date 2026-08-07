@@ -6,6 +6,7 @@ import com.renato.transfer.domain.model.TransferSchedule;
 import com.renato.transfer.domain.model.TransferStatus;
 import com.renato.transfer.domain.service.FeeCalculator;
 import com.renato.transfer.exception.FeeNotApplicableException;
+import com.renato.transfer.infrastructure.messaging.TransferEventPublisher;
 import com.renato.transfer.infrastructure.persistence.TransferScheduleRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,9 +33,12 @@ class ScheduleTransferServiceTest {
     @Mock
     private TransferScheduleRepository repository;
 
+    @Mock
+    private TransferEventPublisher eventPublisher;
+
     @Test
     void shouldScheduleTransferAndReturnResponseWithFeeAndTotal() {
-        ScheduleTransferService service = new ScheduleTransferService(feeCalculator, repository);
+        ScheduleTransferService service = new ScheduleTransferService(feeCalculator, repository, eventPublisher);
         CreateTransferRequest request = new CreateTransferRequest();
         request.setSourceAccount("1234567890");
         request.setDestinationAccount("0987654321");
@@ -62,11 +66,12 @@ class ScheduleTransferServiceTest {
         ArgumentCaptor<TransferSchedule> captor = ArgumentCaptor.forClass(TransferSchedule.class);
         verify(repository).save(captor.capture());
         assertThat(captor.getValue().getFeeAmount()).isEqualByComparingTo("82.00");
+        verify(eventPublisher).publishTransferScheduled(captor.getValue());
     }
 
     @Test
-    void shouldNotPersistWhenFeeIsNotApplicable() {
-        ScheduleTransferService service = new ScheduleTransferService(feeCalculator, repository);
+    void shouldNotPersistOrPublishWhenFeeIsNotApplicable() {
+        ScheduleTransferService service = new ScheduleTransferService(feeCalculator, repository, eventPublisher);
         CreateTransferRequest request = new CreateTransferRequest();
         request.setSourceAccount("1234567890");
         request.setDestinationAccount("0987654321");
@@ -79,5 +84,6 @@ class ScheduleTransferServiceTest {
             .isInstanceOf(FeeNotApplicableException.class);
 
         verify(repository, never()).save(any());
+        verify(eventPublisher, never()).publishTransferScheduled(any());
     }
 }

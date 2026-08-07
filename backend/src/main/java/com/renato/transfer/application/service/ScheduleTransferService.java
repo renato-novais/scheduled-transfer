@@ -5,6 +5,7 @@ import com.renato.transfer.application.dto.TransferResponse;
 import com.renato.transfer.domain.model.TransferSchedule;
 import com.renato.transfer.domain.model.TransferStatus;
 import com.renato.transfer.domain.service.FeeCalculator;
+import com.renato.transfer.infrastructure.messaging.TransferEventPublisher;
 import com.renato.transfer.infrastructure.persistence.TransferScheduleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,13 @@ public class ScheduleTransferService {
 
     private final FeeCalculator feeCalculator;
     private final TransferScheduleRepository repository;
+    private final TransferEventPublisher eventPublisher;
 
-    public ScheduleTransferService(FeeCalculator feeCalculator, TransferScheduleRepository repository) {
+    public ScheduleTransferService(FeeCalculator feeCalculator, TransferScheduleRepository repository,
+                                    TransferEventPublisher eventPublisher) {
         this.feeCalculator = feeCalculator;
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -39,6 +43,7 @@ public class ScheduleTransferService {
             .build();
 
         TransferSchedule saved = repository.save(entity);
+        eventPublisher.publishTransferScheduled(saved);
         return TransferResponse.from(saved);
     }
 }

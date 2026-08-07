@@ -2,10 +2,16 @@
   <h1 class="h3 mb-4">Agendamento de transferências</h1>
 
   @if (successMessage()) {
-    <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+    <div class="alert alert-success d-flex align-items-center gap-2 fw-semibold" role="alert">
+      <span class="fs-5" aria-hidden="true">✓</span>
+      <span>{{ successMessage() }}</span>
+    </div>
   }
   @if (errorMessage()) {
-    <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+    <div class="alert alert-danger d-flex align-items-center gap-2 fw-semibold" role="alert">
+      <span class="fs-5" aria-hidden="true">⚠</span>
+      <span>{{ errorMessage() }}</span>
+    </div>
   }
 
   <div class="card mb-4">

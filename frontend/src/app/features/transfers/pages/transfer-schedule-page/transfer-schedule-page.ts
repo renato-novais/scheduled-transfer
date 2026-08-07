@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 
 import { TransferForm } from '../../components/transfer-form/transfer-form';
 import { TransferList } from '../../components/transfer-list/transfer-list';
@@ -14,6 +14,8 @@ import { TransferApi } from '../../services/transfer-api';
 })
 export class TransferSchedulePage implements OnInit {
   private readonly transferApi = inject(TransferApi);
+
+  @ViewChild(TransferForm) private transferForm?: TransferForm;
 
   readonly transfers = signal<TransferResponse[]>([]);
   readonly loading = signal(false);
@@ -36,6 +38,7 @@ export class TransferSchedulePage implements OnInit {
         this.successMessage.set(
           `Transferência agendada com sucesso. Taxa aplicada: R$ ${response.fee.toFixed(2)}.`,
         );
+        this.transferForm?.clearAmount();
         this.loadTransfers();
       },
       error: (error: HttpErrorResponse) => {

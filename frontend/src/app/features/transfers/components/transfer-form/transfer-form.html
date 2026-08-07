@@ -5,9 +5,12 @@
       <input
         id="sourceAccount"
         type="text"
+        inputmode="numeric"
+        maxlength="10"
         class="form-control"
         formControlName="sourceAccount"
         placeholder="XXXXXXXXXX"
+        (input)="restrictToDigits($event, 'sourceAccount')"
         [class.is-invalid]="form.get('sourceAccount')?.invalid && form.get('sourceAccount')?.touched"
       />
       @if (form.get('sourceAccount')?.invalid && form.get('sourceAccount')?.touched) {
@@ -20,9 +23,12 @@
       <input
         id="destinationAccount"
         type="text"
+        inputmode="numeric"
+        maxlength="10"
         class="form-control"
         formControlName="destinationAccount"
         placeholder="XXXXXXXXXX"
+        (input)="restrictToDigits($event, 'destinationAccount')"
         [class.is-invalid]="form.get('destinationAccount')?.invalid && form.get('destinationAccount')?.touched"
       />
       @if (form.get('destinationAccount')?.invalid && form.get('destinationAccount')?.touched) {
@@ -31,18 +37,22 @@
     </div>
 
     <div class="col-md-6">
-      <label for="amount" class="form-label">Valor (R$)</label>
-      <input
-        id="amount"
-        type="number"
-        step="0.01"
-        class="form-control"
-        formControlName="amount"
-        [class.is-invalid]="form.get('amount')?.invalid && form.get('amount')?.touched"
-      />
-      @if (form.get('amount')?.invalid && form.get('amount')?.touched) {
-        <div class="invalid-feedback">Informe um valor maior que zero.</div>
-      }
+      <label for="amount" class="form-label">Valor</label>
+      <div class="input-group has-validation">
+        <span class="input-group-text">R$</span>
+        <input
+          id="amount"
+          type="number"
+          step="0.01"
+          min="0.01"
+          class="form-control no-spinner"
+          formControlName="amount"
+          [class.is-invalid]="form.get('amount')?.invalid && form.get('amount')?.touched"
+        />
+        @if (form.get('amount')?.invalid && form.get('amount')?.touched) {
+          <div class="invalid-feedback">Informe um valor maior que zero.</div>
+        }
+      </div>
     </div>
 
     <div class="col-md-6">

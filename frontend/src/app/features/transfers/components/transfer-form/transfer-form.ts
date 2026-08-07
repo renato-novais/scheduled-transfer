@@ -36,7 +36,19 @@ export class TransferForm {
     this.scheduled.emit(this.form.getRawValue() as CreateTransferRequest);
   }
 
-  resetForm(): void {
-    this.form.reset();
+  restrictToDigits(event: Event, controlName: 'sourceAccount' | 'destinationAccount'): void {
+    const input = event.target as HTMLInputElement;
+    const digitsOnly = input.value.replace(/\D/g, '').slice(0, 10);
+    if (input.value !== digitsOnly) {
+      input.value = digitsOnly;
+      this.form.get(controlName)?.setValue(digitsOnly, { emitEvent: false });
+    }
+  }
+
+  clearAmount(): void {
+    const amountControl = this.form.get('amount');
+    amountControl?.reset(null);
+    amountControl?.markAsPristine();
+    amountControl?.markAsUntouched();
   }
 }

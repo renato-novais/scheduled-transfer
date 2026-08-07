@@ -1,0 +1,34 @@
+@if (transfers().length === 0) {
+  <p class="text-muted">Nenhuma transferência agendada até o momento.</p>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Agendado em</th>
+          <th scope="col">Conta de origem</th>
+          <th scope="col">Conta de destino</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Taxa</th>
+          <th scope="col">Total</th>
+          <th scope="col">Data da transferência</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (transfer of transfers(); track transfer.id) {
+          <tr>
+            <td>{{ transfer.schedulingDate }}</td>
+            <td>{{ transfer.sourceAccount }}</td>
+            <td>{{ transfer.destinationAccount }}</td>
+            <td>{{ transfer.amount | number: '1.2-2' }}</td>
+            <td>{{ transfer.fee | number: '1.2-2' }}</td>
+            <td>{{ transfer.totalAmount | number: '1.2-2' }}</td>
+            <td>{{ transfer.transferDate }}</td>
+            <td><span class="badge text-bg-secondary">{{ transfer.status }}</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

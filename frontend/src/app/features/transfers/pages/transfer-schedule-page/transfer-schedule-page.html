@@ -1,0 +1,26 @@
+<div class="container py-4">
+  <h1 class="h3 mb-4">Agendamento de transferências</h1>
+
+  @if (successMessage()) {
+    <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+  }
+  @if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+  }
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <app-transfer-form [submitting]="submitting()" (scheduled)="onScheduled($event)" />
+    </div>
+  </div>
+
+  <h2 class="h5 mb-3">Extrato de agendamentos</h2>
+  @if (loading()) {
+    <div class="d-flex align-items-center gap-2 text-muted">
+      <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+      Carregando...
+    </div>
+  } @else {
+    <app-transfer-list [transfers]="transfers()" />
+  }
+</div>

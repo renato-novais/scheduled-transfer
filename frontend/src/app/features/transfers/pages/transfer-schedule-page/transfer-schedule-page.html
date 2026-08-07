@@ -1,18 +1,8 @@
 <div class="container py-4">
   <h1 class="h3 mb-4">Agendamento de transferências</h1>
 
-  @if (successMessage()) {
-    <div class="alert alert-success d-flex align-items-center gap-2 fw-semibold" role="alert">
-      <span class="fs-5" aria-hidden="true">✓</span>
-      <span>{{ successMessage() }}</span>
-    </div>
-  }
-  @if (errorMessage()) {
-    <div class="alert alert-danger d-flex align-items-center gap-2 fw-semibold" role="alert">
-      <span class="fs-5" aria-hidden="true">⚠</span>
-      <span>{{ errorMessage() }}</span>
-    </div>
-  }
+  <app-toast-notification [message]="successMessage()" variant="success" (dismissed)="dismissSuccess()" />
+  <app-toast-notification [message]="errorMessage()" variant="danger" (dismissed)="dismissError()" />
 
   <div class="card mb-4">
     <div class="card-body">

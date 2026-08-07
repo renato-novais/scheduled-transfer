@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, input } from '@angular/core';
 
 import { TransferResponse } from '../../models/transfer.model';
@@ -13,7 +13,7 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
 
 @Component({
   selector: 'app-transfer-list',
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, DatePipe],
   templateUrl: './transfer-list.html',
   styleUrl: './transfer-list.scss',
 })

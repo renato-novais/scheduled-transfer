@@ -18,13 +18,13 @@
       <tbody>
         @for (transfer of transfers(); track transfer.id) {
           <tr>
-            <td>{{ transfer.schedulingDate }}</td>
+            <td>{{ transfer.schedulingDate | date: 'dd/MM/yyyy' }}</td>
             <td>{{ transfer.sourceAccount }}</td>
             <td>{{ transfer.destinationAccount }}</td>
             <td>{{ transfer.amount | number: '1.2-2' }}</td>
             <td>{{ transfer.fee | number: '1.2-2' }}</td>
             <td>{{ transfer.totalAmount | number: '1.2-2' }}</td>
-            <td>{{ transfer.transferDate }}</td>
+            <td>{{ transfer.transferDate | date: 'dd/MM/yyyy' }}</td>
             <td><span [class]="'badge ' + statusBadgeClass(transfer.status)">{{ statusLabel(transfer.status) }}</span></td>
           </tr>
         }
